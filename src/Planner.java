@@ -1,4 +1,3 @@
-```java
 public class Planner {
 
     Graph graph;
@@ -31,6 +30,7 @@ public class Planner {
 
         String bestRoute = "";
         int bestTime = Integer.MAX_VALUE;
+        int changes = 0;
 
         for (Route route : graph.routes) {
 
@@ -47,6 +47,7 @@ public class Planner {
                 if (route.time < bestTime) {
 
                     bestTime = route.time;
+                    changes = 0;
 
                     bestRoute =
                             route.from.name
@@ -74,6 +75,7 @@ public class Planner {
                         if (totalTime < bestTime) {
 
                             bestTime = totalTime;
+                            changes = 1;
 
                             bestRoute =
                                     firstRoute.from.name
@@ -96,7 +98,7 @@ public class Planner {
             System.out.println("Best route found:");
             System.out.println(bestRoute);
             System.out.println("Total time: " + bestTime + " mins");
+            System.out.println("Changes: " + changes);
         }
     }
 }
-```
