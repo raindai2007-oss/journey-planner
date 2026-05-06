@@ -8,6 +8,9 @@ public class Planner {
 
     public void findRoute(String start, String end) {
 
+        String bestRoute = "";
+        int bestTime = Integer.MAX_VALUE;
+
         for (Route route : graph.routes) {
 
             if (
@@ -20,10 +23,15 @@ public class Planner {
                                     && route.to.name.equalsIgnoreCase(start))
             ) {
 
-                System.out.println("Direct route found:");
-                System.out.println(route.from.name + " -> " + route.to.name);
-                System.out.println("Time: " + route.time + " mins");
-                return;
+                if (route.time < bestTime) {
+
+                    bestTime = route.time;
+
+                    bestRoute =
+                            route.from.name
+                                    + " -> "
+                                    + route.to.name;
+                }
             }
         }
 
@@ -42,23 +50,31 @@ public class Planner {
 
                         int totalTime = firstRoute.time + secondRoute.time;
 
-                        System.out.println("Route with one change found:");
-                        System.out.println(
-                                firstRoute.from.name
-                                        + " -> "
-                                        + middleStation
-                                        + " -> "
-                                        + secondRoute.to.name
-                        );
+                        if (totalTime < bestTime) {
 
-                        System.out.println("Total time: " + totalTime + " mins");
+                            bestTime = totalTime;
 
-                        return;
+                            bestRoute =
+                                    firstRoute.from.name
+                                            + " -> "
+                                            + middleStation
+                                            + " -> "
+                                            + secondRoute.to.name;
+                        }
                     }
                 }
             }
         }
 
-        System.out.println("No route found.");
+        if (bestTime == Integer.MAX_VALUE) {
+
+            System.out.println("No route found.");
+
+        } else {
+
+            System.out.println("Best route found:");
+            System.out.println(bestRoute);
+            System.out.println("Total time: " + bestTime + " mins");
+        }
     }
 }
