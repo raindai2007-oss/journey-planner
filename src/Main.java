@@ -1,3 +1,5 @@
+import java.util.Scanner;
+
 public class Main {
     public static void main(String[] args) {
 
@@ -11,8 +13,18 @@ public class Main {
         graph.addRoute(new Route(b, c, 4));
         graph.addRoute(new Route(a, c, 12));
 
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Enter starting station:");
+        String start = scanner.nextLine();
+
+        System.out.println("Enter destination station:");
+        String end = scanner.nextLine();
+
         Planner planner = new Planner(graph);
 
-        planner.findDirectRoute("Piccadilly", "Victoria");
+        planner.findDirectRoute(start, end);
+
+        scanner.close();
     }
 }
