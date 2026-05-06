@@ -23,7 +23,7 @@ public class Main {
 
         Planner planner = new Planner(graph);
 
-        planner.findDirectRoute(start, end);
+        planner.findRoute(start, end);
 
         scanner.close();
     }
