@@ -1,3 +1,4 @@
+```java
 public class Planner {
 
     Graph graph;
@@ -6,7 +7,27 @@ public class Planner {
         this.graph = graph;
     }
 
+    public boolean stationExists(String stationName) {
+
+        for (Route route : graph.routes) {
+
+            if (
+                    route.from.name.equalsIgnoreCase(stationName)
+                            || route.to.name.equalsIgnoreCase(stationName)
+            ) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public void findRoute(String start, String end) {
+
+        if (!stationExists(start) || !stationExists(end)) {
+            System.out.println("Invalid station name.");
+            return;
+        }
 
         String bestRoute = "";
         int bestTime = Integer.MAX_VALUE;
@@ -78,3 +99,4 @@ public class Planner {
         }
     }
 }
+```
