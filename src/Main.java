@@ -3,13 +3,14 @@ public class Main {
 
         Station a = new Station("Piccadilly");
         Station b = new Station("Victoria");
+        Station c = new Station("Deansgate");
 
-        Route r = new Route(a, b, 5);
+        Graph graph = new Graph();
 
-        System.out.println(
-                r.from.name + " -> " +
-                        r.to.name + " : " +
-                        r.time + " mins"
-        );
+        graph.addRoute(new Route(a, b, 5));
+        graph.addRoute(new Route(b, c, 4));
+        graph.addRoute(new Route(a, c, 12));
+
+        graph.printRoutes();
     }
 }
