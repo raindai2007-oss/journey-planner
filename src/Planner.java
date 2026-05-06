@@ -1,11 +1,14 @@
 public class Planner {
 
+    // Stores the graph
     Graph graph;
 
+    // Planner constructor
     public Planner(Graph graph) {
         this.graph = graph;
     }
 
+    // Check if station exists
     public boolean stationExists(String stationName) {
 
         for (Route route : graph.routes) {
@@ -21,6 +24,7 @@ public class Planner {
         return false;
     }
 
+    // Checks if a route matches the selected stations
     public boolean routeMatches(Route route, String start, String end) {
         return (
                 route.from.name.equalsIgnoreCase(start)
@@ -31,6 +35,7 @@ public class Planner {
         );
     }
 
+    // Returns the connected station from a route
     public String getOtherStation(Route route, String stationName) {
 
         if (route.from.name.equalsIgnoreCase(stationName)) {
@@ -44,8 +49,10 @@ public class Planner {
         return "";
     }
 
+    // Finds the best route between two stations
     public void findRoute(String start, String end) {
 
+        // Check if station names are valid
         if (!stationExists(start) || !stationExists(end)) {
             System.out.println("Invalid station name.");
             return;
@@ -55,6 +62,7 @@ public class Planner {
         int bestTime = Integer.MAX_VALUE;
         int changes = 0;
 
+        // Search for direct routes
         for (Route route : graph.routes) {
 
             if (routeMatches(route, start, end)) {
@@ -67,6 +75,7 @@ public class Planner {
             }
         }
 
+        // Search for routes with one change
         for (Route firstRoute : graph.routes) {
 
             String middleStation = getOtherStation(firstRoute, start);
@@ -89,6 +98,7 @@ public class Planner {
             }
         }
 
+        // Search for routes with two changes
         for (Route firstRoute : graph.routes) {
 
             String firstMiddleStation = getOtherStation(firstRoute, start);
@@ -119,6 +129,7 @@ public class Planner {
             }
         }
 
+        // Show results
         if (bestTime == Integer.MAX_VALUE) {
 
             System.out.println("No route found.");
