@@ -18,17 +18,42 @@ public class Main {
         graph.addRoute(new Route(d, e, 6));
         graph.addRoute(new Route(b, e, 15));
 
-        Scanner scanner = new Scanner(System.in);
-
-        System.out.println("Enter starting station:");
-        String start = scanner.nextLine();
-
-        System.out.println("Enter destination station:");
-        String end = scanner.nextLine();
-
         Planner planner = new Planner(graph);
 
-        planner.findRoute(start, end);
+        Scanner scanner = new Scanner(System.in);
+
+        boolean running = true;
+
+        while (running) {
+
+            System.out.println();
+            System.out.println("Manchester Metrolink Journey Planner");
+            System.out.println("1. Find Route");
+            System.out.println("2. Exit");
+            System.out.println("Choose an option:");
+
+            String choice = scanner.nextLine();
+
+            if (choice.equals("1")) {
+
+                System.out.println("Enter starting station:");
+                String start = scanner.nextLine();
+
+                System.out.println("Enter destination station:");
+                String end = scanner.nextLine();
+
+                planner.findRoute(start, end);
+
+            } else if (choice.equals("2")) {
+
+                running = false;
+                System.out.println("Program closed.");
+
+            } else {
+
+                System.out.println("Invalid option.");
+            }
+        }
 
         scanner.close();
     }
