@@ -50,7 +50,7 @@ public class Planner {
     }
 
     // Finds the best route between two stations
-    public void findRoute(String start, String end) {
+    public void findRoute(String start, String end, int maxChanges) {
 
         // Check if station names are valid
         if (!stationExists(start) || !stationExists(end)) {
@@ -63,35 +63,41 @@ public class Planner {
         int changes = 0;
 
         // Search for direct routes
-        for (Route route : graph.routes) {
+        if (maxChanges >= 0) {
 
-            if (routeMatches(route, start, end)) {
+            for (Route route : graph.routes) {
 
-                if (route.time < bestTime) {
-                    bestTime = route.time;
-                    changes = 0;
-                    bestRoute = start + " -> " + end;
+                if (routeMatches(route, start, end)) {
+
+                    if (route.time < bestTime) {
+                        bestTime = route.time;
+                        changes = 0;
+                        bestRoute = start + " -> " + end;
+                    }
                 }
             }
         }
 
         // Search for routes with one change
-        for (Route firstRoute : graph.routes) {
+        if (maxChanges >= 1) {
 
-            String middleStation = getOtherStation(firstRoute, start);
+            for (Route firstRoute : graph.routes) {
 
-            if (!middleStation.equals("")) {
+                String middleStation = getOtherStation(firstRoute, start);
 
-                for (Route secondRoute : graph.routes) {
+                if (!middleStation.equals("")) {
 
-                    if (routeMatches(secondRoute, middleStation, end)) {
+                    for (Route secondRoute : graph.routes) {
 
-                        int totalTime = firstRoute.time + secondRoute.time;
+                        if (routeMatches(secondRoute, middleStation, end)) {
 
-                        if (totalTime < bestTime) {
-                            bestTime = totalTime;
-                            changes = 1;
-                            bestRoute = start + " -> " + middleStation + " -> " + end;
+                            int totalTime = firstRoute.time + secondRoute.time;
+
+                            if (totalTime < bestTime) {
+                                bestTime = totalTime;
+                                changes = 1;
+                                bestRoute = start + " -> " + middleStation + " -> " + end;
+                            }
                         }
                     }
                 }
@@ -99,28 +105,31 @@ public class Planner {
         }
 
         // Search for routes with two changes
-        for (Route firstRoute : graph.routes) {
+        if (maxChanges >= 2) {
 
-            String firstMiddleStation = getOtherStation(firstRoute, start);
+            for (Route firstRoute : graph.routes) {
 
-            if (!firstMiddleStation.equals("")) {
+                String firstMiddleStation = getOtherStation(firstRoute, start);
 
-                for (Route secondRoute : graph.routes) {
+                if (!firstMiddleStation.equals("")) {
 
-                    String secondMiddleStation = getOtherStation(secondRoute, firstMiddleStation);
+                    for (Route secondRoute : graph.routes) {
 
-                    if (!secondMiddleStation.equals("") && !secondMiddleStation.equalsIgnoreCase(start)) {
+                        String secondMiddleStation = getOtherStation(secondRoute, firstMiddleStation);
 
-                        for (Route thirdRoute : graph.routes) {
+                        if (!secondMiddleStation.equals("") && !secondMiddleStation.equalsIgnoreCase(start)) {
 
-                            if (routeMatches(thirdRoute, secondMiddleStation, end)) {
+                            for (Route thirdRoute : graph.routes) {
 
-                                int totalTime = firstRoute.time + secondRoute.time + thirdRoute.time;
+                                if (routeMatches(thirdRoute, secondMiddleStation, end)) {
 
-                                if (totalTime < bestTime) {
-                                    bestTime = totalTime;
-                                    changes = 2;
-                                    bestRoute = start + " -> " + firstMiddleStation + " -> " + secondMiddleStation + " -> " + end;
+                                    int totalTime = firstRoute.time + secondRoute.time + thirdRoute.time;
+
+                                    if (totalTime < bestTime) {
+                                        bestTime = totalTime;
+                                        changes = 2;
+                                        bestRoute = start + " -> " + firstMiddleStation + " -> " + secondMiddleStation + " -> " + end;
+                                    }
                                 }
                             }
                         }
@@ -132,7 +141,7 @@ public class Planner {
         // Show results
         if (bestTime == Integer.MAX_VALUE) {
 
-            System.out.println("No route found.");
+            System.out.println("No route found with the selected constraint.");
 
         } else {
 

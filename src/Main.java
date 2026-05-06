@@ -49,7 +49,10 @@ public class Main {
                 System.out.println("Enter destination station:");
                 String end = scanner.nextLine();
 
-                planner.findRoute(start, end);
+                System.out.println("Enter maximum number of changes:");
+                int maxChanges = Integer.parseInt(scanner.nextLine());
+
+                planner.findRoute(start, end, maxChanges);
 
             }
 
