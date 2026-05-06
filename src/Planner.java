@@ -21,6 +21,29 @@ public class Planner {
         return false;
     }
 
+    public boolean routeMatches(Route route, String start, String end) {
+        return (
+                route.from.name.equalsIgnoreCase(start)
+                        && route.to.name.equalsIgnoreCase(end)
+        ) || (
+                route.from.name.equalsIgnoreCase(end)
+                        && route.to.name.equalsIgnoreCase(start)
+        );
+    }
+
+    public String getOtherStation(Route route, String stationName) {
+
+        if (route.from.name.equalsIgnoreCase(stationName)) {
+            return route.to.name;
+        }
+
+        if (route.to.name.equalsIgnoreCase(stationName)) {
+            return route.from.name;
+        }
+
+        return "";
+    }
+
     public void findRoute(String start, String end) {
 
         if (!stationExists(start) || !stationExists(end)) {
@@ -34,55 +57,62 @@ public class Planner {
 
         for (Route route : graph.routes) {
 
-            if (
-                    (route.from.name.equalsIgnoreCase(start)
-                            && route.to.name.equalsIgnoreCase(end))
-
-                            ||
-
-                            (route.from.name.equalsIgnoreCase(end)
-                                    && route.to.name.equalsIgnoreCase(start))
-            ) {
+            if (routeMatches(route, start, end)) {
 
                 if (route.time < bestTime) {
-
                     bestTime = route.time;
                     changes = 0;
-
-                    bestRoute =
-                            route.from.name
-                                    + " -> "
-                                    + route.to.name;
+                    bestRoute = start + " -> " + end;
                 }
             }
         }
 
         for (Route firstRoute : graph.routes) {
 
-            if (firstRoute.from.name.equalsIgnoreCase(start)) {
+            String middleStation = getOtherStation(firstRoute, start);
 
-                String middleStation = firstRoute.to.name;
+            if (!middleStation.equals("")) {
 
                 for (Route secondRoute : graph.routes) {
 
-                    if (
-                            secondRoute.from.name.equalsIgnoreCase(middleStation)
-                                    && secondRoute.to.name.equalsIgnoreCase(end)
-                    ) {
+                    if (routeMatches(secondRoute, middleStation, end)) {
 
                         int totalTime = firstRoute.time + secondRoute.time;
 
                         if (totalTime < bestTime) {
-
                             bestTime = totalTime;
                             changes = 1;
+                            bestRoute = start + " -> " + middleStation + " -> " + end;
+                        }
+                    }
+                }
+            }
+        }
 
-                            bestRoute =
-                                    firstRoute.from.name
-                                            + " -> "
-                                            + middleStation
-                                            + " -> "
-                                            + secondRoute.to.name;
+        for (Route firstRoute : graph.routes) {
+
+            String firstMiddleStation = getOtherStation(firstRoute, start);
+
+            if (!firstMiddleStation.equals("")) {
+
+                for (Route secondRoute : graph.routes) {
+
+                    String secondMiddleStation = getOtherStation(secondRoute, firstMiddleStation);
+
+                    if (!secondMiddleStation.equals("") && !secondMiddleStation.equalsIgnoreCase(start)) {
+
+                        for (Route thirdRoute : graph.routes) {
+
+                            if (routeMatches(thirdRoute, secondMiddleStation, end)) {
+
+                                int totalTime = firstRoute.time + secondRoute.time + thirdRoute.time;
+
+                                if (totalTime < bestTime) {
+                                    bestTime = totalTime;
+                                    changes = 2;
+                                    bestRoute = start + " -> " + firstMiddleStation + " -> " + secondMiddleStation + " -> " + end;
+                                }
+                            }
                         }
                     }
                 }
