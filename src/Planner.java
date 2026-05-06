@@ -11,8 +11,15 @@ public class Planner {
         boolean found = false;
 
         for (Route route : graph.routes) {
-            if (route.from.name.equalsIgnoreCase(start)
-                    && route.to.name.equalsIgnoreCase(end)) {
+            if (
+                    (route.from.name.equalsIgnoreCase(start)
+                            && route.to.name.equalsIgnoreCase(end))
+
+                            ||
+
+                            (route.from.name.equalsIgnoreCase(end)
+                                    && route.to.name.equalsIgnoreCase(start))
+            ) {
 
                 System.out.println("Route found:");
                 System.out.println(route.from.name + " -> " + route.to.name);
