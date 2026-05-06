@@ -11,6 +11,8 @@ public class Main {
         graph.addRoute(new Route(b, c, 4));
         graph.addRoute(new Route(a, c, 12));
 
-        graph.printRoutes();
+        Planner planner = new Planner(graph);
+
+        planner.findDirectRoute("Piccadilly", "Victoria");
     }
 }
