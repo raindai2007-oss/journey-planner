@@ -43,6 +43,15 @@ public class Main {
             // Find route
             if (choice.equals("1")) {
 
+                System.out.println();
+                System.out.println("Available stations:");
+                System.out.println("- Piccadilly");
+                System.out.println("- Victoria");
+                System.out.println("- Deansgate");
+                System.out.println("- St Peters Square");
+                System.out.println("- MediaCityUK");
+                System.out.println();
+
                 System.out.println("Enter starting station:");
                 String start = scanner.nextLine();
 
