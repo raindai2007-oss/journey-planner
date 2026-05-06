@@ -10,6 +10,11 @@ public class Main {
         Station c = new Station("Deansgate");
         Station d = new Station("St Peters Square");
         Station e = new Station("MediaCityUK");
+        Station f = new Station("Market Street");
+        Station g = new Station("Shudehill");
+        Station h = new Station("Cornbrook");
+        Station i = new Station("Old Trafford");
+        Station j = new Station("Altrincham");
 
         // Store routes
         Graph graph = new Graph();
@@ -21,6 +26,13 @@ public class Main {
         graph.addRoute(new Route(c, d, 3));
         graph.addRoute(new Route(d, e, 6));
         graph.addRoute(new Route(b, e, 15));
+        graph.addRoute(new Route(a, f, 4));
+        graph.addRoute(new Route(f, g, 3));
+        graph.addRoute(new Route(g, b, 4));
+        graph.addRoute(new Route(d, h, 5));
+        graph.addRoute(new Route(h, i, 6));
+        graph.addRoute(new Route(i, j, 12));
+        graph.addRoute(new Route(h, e, 8));
 
         // Create planner object
         Planner planner = new Planner(graph);
@@ -50,6 +62,11 @@ public class Main {
                 System.out.println("- Deansgate");
                 System.out.println("- St Peters Square");
                 System.out.println("- MediaCityUK");
+                System.out.println("- Market Street");
+                System.out.println("- Shudehill");
+                System.out.println("- Cornbrook");
+                System.out.println("- Old Trafford");
+                System.out.println("- Altrincham");
                 System.out.println();
 
                 System.out.println("Enter starting station:");
