@@ -6,12 +6,17 @@ public class Main {
         Station a = new Station("Piccadilly");
         Station b = new Station("Victoria");
         Station c = new Station("Deansgate");
+        Station d = new Station("St Peters Square");
+        Station e = new Station("MediaCityUK");
 
         Graph graph = new Graph();
 
         graph.addRoute(new Route(a, b, 5));
         graph.addRoute(new Route(b, c, 4));
         graph.addRoute(new Route(a, c, 12));
+        graph.addRoute(new Route(c, d, 3));
+        graph.addRoute(new Route(d, e, 6));
+        graph.addRoute(new Route(b, e, 15));
 
         Scanner scanner = new Scanner(System.in);
 
