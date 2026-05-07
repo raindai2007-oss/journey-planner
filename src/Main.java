@@ -15,6 +15,8 @@ public class Main {
         Station h = new Station("Cornbrook");
         Station i = new Station("Old Trafford");
         Station j = new Station("Altrincham");
+        Station k = new Station("Eccles");
+        Station l = new Station("Trafford Bar");
 
         // Store routes
         Graph graph = new Graph();
@@ -33,6 +35,9 @@ public class Main {
         graph.addRoute(new Route(h, i, 6));
         graph.addRoute(new Route(i, j, 12));
         graph.addRoute(new Route(h, e, 8));
+        graph.addRoute(new Route(e, k, 7));
+        graph.addRoute(new Route(h, l, 4));
+        graph.addRoute(new Route(l, i, 5));
 
         // Create planner object
         Planner planner = new Planner(graph);
@@ -73,6 +78,8 @@ public class Main {
                 System.out.println("- Cornbrook");
                 System.out.println("- Old Trafford");
                 System.out.println("- Altrincham");
+                System.out.println("- Eccles");
+                System.out.println("- Trafford Bar");
                 System.out.println("====================================");
                 System.out.println();
 
