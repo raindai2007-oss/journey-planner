@@ -49,7 +49,8 @@ public class Main {
             System.out.println("Manchester Metrolink Journey Planner");
             System.out.println("====================================");
             System.out.println("1. Find Route");
-            System.out.println("2. Exit");
+            System.out.println("2. Show Routes");
+            System.out.println("3. Exit");
             System.out.println("====================================");
             System.out.println("Choose an option:");
 
@@ -99,8 +100,20 @@ public class Main {
 
             }
 
-            // Exit program
+            // Show routes
             else if (choice.equals("2")) {
+
+                System.out.println();
+                System.out.println("====================================");
+                System.out.println("Available Routes");
+                System.out.println("====================================");
+                graph.printRoutes();
+                System.out.println("====================================");
+
+            }
+
+            // Exit program
+            else if (choice.equals("3")) {
 
                 running = false;
                 System.out.println();
