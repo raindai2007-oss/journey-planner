@@ -82,7 +82,18 @@ public class Main {
                 String end = scanner.nextLine();
 
                 System.out.println("Enter maximum number of changes:");
-                int maxChanges = Integer.parseInt(scanner.nextLine());
+
+                int maxChanges;
+
+                try {
+                    maxChanges = Integer.parseInt(scanner.nextLine());
+                } catch (NumberFormatException error) {
+                    System.out.println();
+                    System.out.println("====================================");
+                    System.out.println("Please enter a valid number.");
+                    System.out.println("====================================");
+                    continue;
+                }
 
                 planner.findRoute(start, end, maxChanges);
 
