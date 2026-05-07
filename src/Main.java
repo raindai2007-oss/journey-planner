@@ -45,9 +45,12 @@ public class Main {
         while (running) {
 
             System.out.println();
+            System.out.println("====================================");
             System.out.println("Manchester Metrolink Journey Planner");
+            System.out.println("====================================");
             System.out.println("1. Find Route");
             System.out.println("2. Exit");
+            System.out.println("====================================");
             System.out.println("Choose an option:");
 
             String choice = scanner.nextLine();
@@ -56,7 +59,9 @@ public class Main {
             if (choice.equals("1")) {
 
                 System.out.println();
-                System.out.println("Available stations:");
+                System.out.println("====================================");
+                System.out.println("Available Stations");
+                System.out.println("====================================");
                 System.out.println("- Piccadilly");
                 System.out.println("- Victoria");
                 System.out.println("- Deansgate");
@@ -67,6 +72,7 @@ public class Main {
                 System.out.println("- Cornbrook");
                 System.out.println("- Old Trafford");
                 System.out.println("- Altrincham");
+                System.out.println("====================================");
                 System.out.println();
 
                 System.out.println("Enter starting station:");
@@ -86,14 +92,20 @@ public class Main {
             else if (choice.equals("2")) {
 
                 running = false;
+                System.out.println();
+                System.out.println("====================================");
                 System.out.println("Program closed.");
+                System.out.println("====================================");
 
             }
 
             // Invalid input
             else {
 
+                System.out.println();
+                System.out.println("====================================");
                 System.out.println("Invalid option.");
+                System.out.println("====================================");
             }
         }
 
