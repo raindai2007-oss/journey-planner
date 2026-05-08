@@ -38,6 +38,10 @@ public class Main {
         graph.addRoute(new Route(e, k, 7));
         graph.addRoute(new Route(h, l, 4));
         graph.addRoute(new Route(l, i, 5));
+        graph.addRoute(new Route(f, d, 5));
+        graph.addRoute(new Route(g, e, 10));
+        graph.addRoute(new Route(l, j, 14));
+        graph.addRoute(new Route(k, h, 9));
 
         // Create planner object
         Planner planner = new Planner(graph);
