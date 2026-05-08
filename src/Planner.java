@@ -1,154 +1,128 @@
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.PriorityQueue;
+
 public class Planner {
 
-    // Stores the graph
     Graph graph;
 
-    // Planner constructor
     public Planner(Graph graph) {
         this.graph = graph;
     }
 
-    // Check if station exists
-    public boolean stationExists(String stationName) {
+    public void findRoute(String startName, String endName, String option) {
 
-        for (Route route : graph.routes) {
-
-            if (
-                    route.from.name.equalsIgnoreCase(stationName)
-                            || route.to.name.equalsIgnoreCase(stationName)
-            ) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    // Checks if a route matches the selected stations
-    public boolean routeMatches(Route route, String start, String end) {
-        return (
-                route.from.name.equalsIgnoreCase(start)
-                        && route.to.name.equalsIgnoreCase(end)
-        ) || (
-                route.from.name.equalsIgnoreCase(end)
-                        && route.to.name.equalsIgnoreCase(start)
-        );
-    }
-
-    // Returns the connected station from a route
-    public String getOtherStation(Route route, String stationName) {
-
-        if (route.from.name.equalsIgnoreCase(stationName)) {
-            return route.to.name;
-        }
-
-        if (route.to.name.equalsIgnoreCase(stationName)) {
-            return route.from.name;
-        }
-
-        return "";
-    }
-
-    // Finds the best route between two stations
-    public void findRoute(String start, String end, int maxChanges) {
-
-        // Check if station names are valid
-        if (!stationExists(start) || !stationExists(end)) {
+        if (!graph.stationExists(startName) || !graph.stationExists(endName)) {
             System.out.println("Invalid station name.");
             return;
         }
 
-        String bestRoute = "";
-        int bestTime = Integer.MAX_VALUE;
-        int changes = 0;
+        Station start = graph.getStation(startName);
+        Station end = graph.getStation(endName);
 
-        // Search for direct routes
-        if (maxChanges >= 0) {
+        PriorityQueue<PathState> queue = new PriorityQueue<>(new Comparator<PathState>() {
+            public int compare(PathState a, PathState b) {
 
-            for (Route route : graph.routes) {
-
-                if (routeMatches(route, start, end)) {
-
-                    if (route.time < bestTime) {
-                        bestTime = route.time;
-                        changes = 0;
-                        bestRoute = start + " -> " + end;
+                if (option.equals("changes")) {
+                    if (a.changes != b.changes) {
+                        return a.changes - b.changes;
                     }
+
+                    return Double.compare(a.totalTime, b.totalTime);
                 }
+
+                if (a.totalTime != b.totalTime) {
+                    return Double.compare(a.totalTime, b.totalTime);
+                }
+
+                return a.changes - b.changes;
+            }
+        });
+
+        HashMap<String, Double> bestScore = new HashMap<>();
+
+        queue.add(new PathState(start, 0, 0, "", new ArrayList<Route>()));
+
+        while (!queue.isEmpty()) {
+
+            PathState current = queue.poll();
+
+            if (current.station.name.equalsIgnoreCase(end.name)) {
+                printJourney(current);
+                return;
+            }
+
+            String key = current.station.name.toLowerCase() + "-" + current.currentLine;
+            double score;
+
+            if (option.equals("changes")) {
+                score = current.changes;
+            } else {
+                score = current.totalTime;
+            }
+
+            if (bestScore.containsKey(key) && bestScore.get(key) <= score) {
+                continue;
+            }
+
+            bestScore.put(key, score);
+
+            for (Route route : graph.getRoutesFrom(current.station)) {
+
+                Station nextStation = route.getOtherStation(current.station);
+
+                if (nextStation == null) {
+                    continue;
+                }
+
+                int newChanges = current.changes;
+
+                if (!current.currentLine.equals("") && !current.currentLine.equals(route.lineColour)) {
+                    newChanges++;
+                }
+
+                ArrayList<Route> newPath = new ArrayList<>(current.path);
+                newPath.add(route);
+
+                queue.add(new PathState(
+                        nextStation,
+                        current.totalTime + route.time,
+                        newChanges,
+                        route.lineColour,
+                        newPath
+                ));
             }
         }
 
-        // Search for routes with one change
-        if (maxChanges >= 1) {
+        System.out.println("No route found.");
+    }
 
-            for (Route firstRoute : graph.routes) {
+    public void printJourney(PathState result) {
 
-                String middleStation = getOtherStation(firstRoute, start);
+        System.out.println();
+        System.out.println("====================================");
+        System.out.println("Best Route Found");
+        System.out.println("====================================");
 
-                if (!middleStation.equals("")) {
-
-                    for (Route secondRoute : graph.routes) {
-
-                        if (routeMatches(secondRoute, middleStation, end)) {
-
-                            int totalTime = firstRoute.time + secondRoute.time;
-
-                            if (totalTime < bestTime) {
-                                bestTime = totalTime;
-                                changes = 1;
-                                bestRoute = start + " -> " + middleStation + " -> " + end;
-                            }
-                        }
-                    }
-                }
-            }
+        if (result.path.size() == 0) {
+            System.out.println("Start and destination are the same.");
+            return;
         }
 
-        // Search for routes with two changes
-        if (maxChanges >= 2) {
+        Route firstRoute = result.path.get(0);
+        System.out.println("Start: " + firstRoute.from.name);
 
-            for (Route firstRoute : graph.routes) {
-
-                String firstMiddleStation = getOtherStation(firstRoute, start);
-
-                if (!firstMiddleStation.equals("")) {
-
-                    for (Route secondRoute : graph.routes) {
-
-                        String secondMiddleStation = getOtherStation(secondRoute, firstMiddleStation);
-
-                        if (!secondMiddleStation.equals("") && !secondMiddleStation.equalsIgnoreCase(start)) {
-
-                            for (Route thirdRoute : graph.routes) {
-
-                                if (routeMatches(thirdRoute, secondMiddleStation, end)) {
-
-                                    int totalTime = firstRoute.time + secondRoute.time + thirdRoute.time;
-
-                                    if (totalTime < bestTime) {
-                                        bestTime = totalTime;
-                                        changes = 2;
-                                        bestRoute = start + " -> " + firstMiddleStation + " -> " + secondMiddleStation + " -> " + end;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+        for (Route route : result.path) {
+            System.out.println(
+                    "Take " + route.lineColour +
+                            " line to " + route.to.name +
+                            " (" + route.time + " mins)"
+            );
         }
 
-        // Show results
-        if (bestTime == Integer.MAX_VALUE) {
-
-            System.out.println("No route found with the selected constraint.");
-
-        } else {
-
-            System.out.println("Best route found:");
-            System.out.println(bestRoute);
-            System.out.println("Total time: " + bestTime + " mins");
-            System.out.println("Changes: " + changes);
-        }
+        System.out.println("Total time: " + result.totalTime + " mins");
+        System.out.println("Line changes: " + result.changes);
+        System.out.println("====================================");
     }
 }
