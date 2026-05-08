@@ -4,88 +4,72 @@ public class Main {
 
     public static void main(String[] args) {
 
-        // Create stations
-        Station a = new Station("Piccadilly");
-        Station b = new Station("Victoria");
-        Station c = new Station("Deansgate");
-        Station d = new Station("St Peters Square");
-        Station e = new Station("MediaCityUK");
-        Station f = new Station("Market Street");
-        Station g = new Station("Shudehill");
-        Station h = new Station("Cornbrook");
-        Station i = new Station("Old Trafford");
-        Station j = new Station("Altrincham");
-        Station k = new Station("Eccles");
-        Station l = new Station("Trafford Bar");
-
-        // Store routes
         Graph graph = new Graph();
 
-        // Add routes
-        graph.addRoute(new Route(a, b, 5));
-        graph.addRoute(new Route(b, c, 4));
-        graph.addRoute(new Route(a, c, 12));
-        graph.addRoute(new Route(c, d, 3));
-        graph.addRoute(new Route(d, e, 6));
-        graph.addRoute(new Route(b, e, 15));
-        graph.addRoute(new Route(a, f, 4));
-        graph.addRoute(new Route(f, g, 3));
-        graph.addRoute(new Route(g, b, 4));
-        graph.addRoute(new Route(d, h, 5));
-        graph.addRoute(new Route(h, i, 6));
-        graph.addRoute(new Route(i, j, 12));
-        graph.addRoute(new Route(h, e, 8));
-        graph.addRoute(new Route(e, k, 7));
-        graph.addRoute(new Route(h, l, 4));
-        graph.addRoute(new Route(l, i, 5));
-        graph.addRoute(new Route(f, d, 5));
-        graph.addRoute(new Route(g, e, 10));
-        graph.addRoute(new Route(l, j, 14));
-        graph.addRoute(new Route(k, h, 9));
+        graph.addRoute("Bury", "Radcliffe", 6, "yellow");
+        graph.addRoute("Radcliffe", "Whitefield", 3, "yellow");
+        graph.addRoute("Whitefield", "Besses o'th' Barn", 2.5, "yellow");
+        graph.addRoute("Besses o'th' Barn", "Prestwich", 2, "yellow");
+        graph.addRoute("Prestwich", "Heaton Park", 2.5, "yellow");
+        graph.addRoute("Heaton Park", "Bowker Vale", 2, "yellow");
+        graph.addRoute("Bowker Vale", "Crumpsall", 1.5, "yellow");
+        graph.addRoute("Crumpsall", "Abraham Moss", 2, "yellow");
+        graph.addRoute("Abraham Moss", "Queens Road", 2.5, "yellow");
+        graph.addRoute("Queens Road", "Victoria", 5, "yellow");
+        graph.addRoute("Victoria", "Shudehill", 2, "yellow");
+        graph.addRoute("Shudehill", "Market Street", 2, "yellow");
+        graph.addRoute("Market Street", "Piccadilly Gardens", 2, "yellow");
+        graph.addRoute("Piccadilly Gardens", "Piccadilly Station", 3, "yellow");
 
-        // Create planner object
+        graph.addRoute("Altrincham", "Navigation Road", 1.5, "purple");
+        graph.addRoute("Navigation Road", "Timperley", 2, "purple");
+        graph.addRoute("Timperley", "Brooklands", 2.5, "purple");
+        graph.addRoute("Brooklands", "Sale", 1, "purple");
+        graph.addRoute("Sale", "Dane Road", 1, "purple");
+        graph.addRoute("Dane Road", "Stretford", 2.5, "purple");
+        graph.addRoute("Stretford", "Old Trafford", 2, "purple");
+        graph.addRoute("Old Trafford", "Trafford Bar", 2.5, "purple");
+        graph.addRoute("Trafford Bar", "Cornbrook", 3, "purple");
+        graph.addRoute("Cornbrook", "Deansgate/Castlefield", 2, "purple");
+        graph.addRoute("Deansgate/Castlefield", "St. Peter's Square", 1, "purple");
+        graph.addRoute("St. Peter's Square", "Piccadilly Gardens", 1.5, "purple");
+        graph.addRoute("Piccadilly Gardens", "Piccadilly Station", 2, "purple");
+
+        graph.addRoute("Eccles", "Ladywell", 1.5, "lightblue");
+        graph.addRoute("Ladywell", "Weaste", 3, "lightblue");
+        graph.addRoute("Weaste", "Langworthy", 2.5, "lightblue");
+        graph.addRoute("Langworthy", "Broadway", 2, "lightblue");
+        graph.addRoute("Broadway", "Media CityUK", 2, "lightblue");
+        graph.addRoute("Media CityUK", "Harbour City", 2, "lightblue");
+        graph.addRoute("Harbour City", "Anchorage", 1.5, "lightblue");
+        graph.addRoute("Anchorage", "Salford Quays", 2, "lightblue");
+        graph.addRoute("Salford Quays", "Exchange Quay", 2, "lightblue");
+        graph.addRoute("Exchange Quay", "Pomona", 2, "lightblue");
+        graph.addRoute("Pomona", "Cornbrook", 3, "lightblue");
+        graph.addRoute("Cornbrook", "Deansgate/Castlefield", 3.5, "lightblue");
+
         Planner planner = new Planner(graph);
 
         Scanner scanner = new Scanner(System.in);
-
         boolean running = true;
 
-        // Main menu
         while (running) {
 
             System.out.println();
             System.out.println("====================================");
             System.out.println("Manchester Metrolink Journey Planner");
             System.out.println("====================================");
-            System.out.println("1. Find Route");
-            System.out.println("2. Show Routes");
-            System.out.println("3. Exit");
+            System.out.println("1. Find shortest time route");
+            System.out.println("2. Find route with fewest changes");
+            System.out.println("3. Show Stations");
+            System.out.println("4. Show Routes");
+            System.out.println("5. Exit");
             System.out.println("====================================");
             System.out.println("Choose an option:");
 
             String choice = scanner.nextLine();
 
-            // Find route
-            if (choice.equals("1")) {
-
-                System.out.println();
-                System.out.println("====================================");
-                System.out.println("Available Stations");
-                System.out.println("====================================");
-                System.out.println("- Piccadilly");
-                System.out.println("- Victoria");
-                System.out.println("- Deansgate");
-                System.out.println("- St Peters Square");
-                System.out.println("- MediaCityUK");
-                System.out.println("- Market Street");
-                System.out.println("- Shudehill");
-                System.out.println("- Cornbrook");
-                System.out.println("- Old Trafford");
-                System.out.println("- Altrincham");
-                System.out.println("- Eccles");
-                System.out.println("- Trafford Bar");
-                System.out.println("====================================");
-                System.out.println();
+            if (choice.equals("1") || choice.equals("2")) {
 
                 System.out.println("Enter starting station:");
                 String start = scanner.nextLine();
@@ -93,54 +77,28 @@ public class Main {
                 System.out.println("Enter destination station:");
                 String end = scanner.nextLine();
 
-                System.out.println("Enter maximum number of changes:");
-
-                int maxChanges;
-
-                try {
-                    maxChanges = Integer.parseInt(scanner.nextLine());
-                } catch (NumberFormatException error) {
-                    System.out.println();
-                    System.out.println("====================================");
-                    System.out.println("Please enter a valid number.");
-                    System.out.println("====================================");
-                    continue;
+                if (choice.equals("1")) {
+                    planner.findRoute(start, end, "time");
+                } else {
+                    planner.findRoute(start, end, "changes");
                 }
 
-                planner.findRoute(start, end, maxChanges);
+            } else if (choice.equals("3")) {
 
-            }
+                graph.printStations();
 
-            // Show routes
-            else if (choice.equals("2")) {
+            } else if (choice.equals("4")) {
 
-                System.out.println();
-                System.out.println("====================================");
-                System.out.println("Available Routes");
-                System.out.println("====================================");
                 graph.printRoutes();
-                System.out.println("====================================");
 
-            }
-
-            // Exit program
-            else if (choice.equals("3")) {
+            } else if (choice.equals("5")) {
 
                 running = false;
-                System.out.println();
-                System.out.println("====================================");
                 System.out.println("Program closed.");
-                System.out.println("====================================");
 
-            }
+            } else {
 
-            // Invalid input
-            else {
-
-                System.out.println();
-                System.out.println("====================================");
                 System.out.println("Invalid option.");
-                System.out.println("====================================");
             }
         }
 

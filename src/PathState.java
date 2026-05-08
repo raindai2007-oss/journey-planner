@@ -16,4 +16,3 @@ public class PathState {
         this.path = path;
     }
 }
-Main.java
