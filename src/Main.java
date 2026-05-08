@@ -4,8 +4,10 @@ public class Main {
 
     public static void main(String[] args) {
 
+        // Create graph object
         Graph graph = new Graph();
 
+        // Add yellow line routes
         graph.addRoute("Bury", "Radcliffe", 6, "yellow");
         graph.addRoute("Radcliffe", "Whitefield", 3, "yellow");
         graph.addRoute("Whitefield", "Besses o'th' Barn", 2.5, "yellow");
@@ -21,6 +23,7 @@ public class Main {
         graph.addRoute("Market Street", "Piccadilly Gardens", 2, "yellow");
         graph.addRoute("Piccadilly Gardens", "Piccadilly Station", 3, "yellow");
 
+        // Add purple line routes
         graph.addRoute("Altrincham", "Navigation Road", 1.5, "purple");
         graph.addRoute("Navigation Road", "Timperley", 2, "purple");
         graph.addRoute("Timperley", "Brooklands", 2.5, "purple");
@@ -35,6 +38,7 @@ public class Main {
         graph.addRoute("St. Peter's Square", "Piccadilly Gardens", 1.5, "purple");
         graph.addRoute("Piccadilly Gardens", "Piccadilly Station", 2, "purple");
 
+        // Add light blue line routes
         graph.addRoute("Eccles", "Ladywell", 1.5, "lightblue");
         graph.addRoute("Ladywell", "Weaste", 3, "lightblue");
         graph.addRoute("Weaste", "Langworthy", 2.5, "lightblue");
@@ -48,11 +52,13 @@ public class Main {
         graph.addRoute("Pomona", "Cornbrook", 3, "lightblue");
         graph.addRoute("Cornbrook", "Deansgate/Castlefield", 3.5, "lightblue");
 
+        // Create planner object
         Planner planner = new Planner(graph);
 
         Scanner scanner = new Scanner(System.in);
         boolean running = true;
 
+        // Main menu
         while (running) {
 
             System.out.println();
@@ -69,6 +75,7 @@ public class Main {
 
             String choice = scanner.nextLine();
 
+            // Find routes
             if (choice.equals("1") || choice.equals("2")) {
 
                 System.out.println("Enter starting station:");
@@ -77,26 +84,42 @@ public class Main {
                 System.out.println("Enter destination station:");
                 String end = scanner.nextLine();
 
+                // Find shortest time route
                 if (choice.equals("1")) {
                     planner.findRoute(start, end, "time");
-                } else {
+                }
+
+                // Find route with fewest changes
+                else {
                     planner.findRoute(start, end, "changes");
                 }
 
-            } else if (choice.equals("3")) {
+            }
+
+            // Show stations
+            else if (choice.equals("3")) {
 
                 graph.printStations();
 
-            } else if (choice.equals("4")) {
+            }
+
+            // Show routes
+            else if (choice.equals("4")) {
 
                 graph.printRoutes();
 
-            } else if (choice.equals("5")) {
+            }
+
+            // Exit program
+            else if (choice.equals("5")) {
 
                 running = false;
                 System.out.println("Program closed.");
 
-            } else {
+            }
+
+            // Invalid option
+            else {
 
                 System.out.println("Invalid option.");
             }

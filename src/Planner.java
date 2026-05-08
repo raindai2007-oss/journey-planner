@@ -5,14 +5,18 @@ import java.util.PriorityQueue;
 
 public class Planner {
 
+    // Store graph
     Graph graph;
 
+    // Planner constructor
     public Planner(Graph graph) {
         this.graph = graph;
     }
 
+    // Find route based on chosen option
     public void findRoute(String startName, String endName, String option) {
 
+        // Check valid stations
         if (!graph.stationExists(startName) || !graph.stationExists(endName)) {
             System.out.println("Invalid station name.");
             return;
@@ -21,6 +25,7 @@ public class Planner {
         Station start = graph.getStation(startName);
         Station end = graph.getStation(endName);
 
+        // Priority queue sorts possible routes
         PriorityQueue<PathState> queue = new PriorityQueue<>(new Comparator<PathState>() {
             public int compare(PathState a, PathState b) {
 
@@ -40,10 +45,12 @@ public class Planner {
             }
         });
 
+        // Stores best score found so far
         HashMap<String, Double> bestScore = new HashMap<>();
 
         queue.add(new PathState(start, 0, 0, "", new ArrayList<Route>()));
 
+        // Search through possible routes
         while (!queue.isEmpty()) {
 
             PathState current = queue.poll();
@@ -68,6 +75,7 @@ public class Planner {
 
             bestScore.put(key, score);
 
+            // Check connecting routes
             for (Route route : graph.getRoutesFrom(current.station)) {
 
                 Station nextStation = route.getOtherStation(current.station);
@@ -78,6 +86,7 @@ public class Planner {
 
                 int newChanges = current.changes;
 
+                // Count line changes
                 if (!current.currentLine.equals("") && !current.currentLine.equals(route.lineColour)) {
                     newChanges++;
                 }
@@ -98,6 +107,7 @@ public class Planner {
         System.out.println("No route found.");
     }
 
+    // Print journey result
     public void printJourney(PathState result) {
 
         System.out.println();
@@ -113,6 +123,7 @@ public class Planner {
         Route firstRoute = result.path.get(0);
         System.out.println("Start: " + firstRoute.from.name);
 
+        // Print each step
         for (Route route : result.path) {
             System.out.println(
                     "Take " + route.lineColour +
